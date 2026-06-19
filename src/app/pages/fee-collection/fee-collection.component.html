@@ -1,0 +1,310 @@
+<div class="erp-header">
+
+<div class="left-section">
+
+  <h2 class="page-title">
+    MVM Trend Analysis Report
+  </h2>
+
+  <span class="page-module">
+    {{ pageName }}
+  </span>
+
+</div>
+
+  <div class="right-section"> 
+
+     <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE 2026-27
+    </div> 
+
+     <div class="session-switch">
+<button
+ [class.active]="selectedSession==='2025-26'"
+ (click)="changeSession('2025-26')">
+
+ 2025-26
+
+</button>
+
+<button
+ [class.active]="selectedSession==='2026-27'"
+ (click)="changeSession('2026-27')">
+
+ 2026-27
+
+</button>
+
+    </div>
+
+   <button
+ class="compare-btn"
+ [class.active]="compareMode"
+ (click)="toggleCompare()">
+
+ Compare
+
+</button>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedState"
+  (change)="onStateChange()">
+
+  <option *ngFor="let s of states" [value]="s">
+    {{s}}
+  </option>
+
+</select>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedBranch"
+  (change)="onBranchChange()">
+
+  <!-- <option value="all">
+    All Branches
+  </option> -->
+
+  <option
+    *ngFor="let branch of branchOptions"
+    [value]="branch.SchoolId">
+
+    {{branch.SchoolName}}
+
+  </option>
+
+</select>
+
+<button
+  class="export-btn"
+  (click)="exportCurrentPage()">
+
+  <i class="fa fa-download"></i>
+  Export
+
+</button>
+    <!-- <button class="export-btn">
+      ⬇ Export
+    </button> -->
+
+  </div>
+
+</div>
+
+<div class="fee-page">
+
+  <!-- KPI CARDS -->
+
+  <div class="kpi-grid">
+
+    <div
+      *ngFor="let card of kpis"
+      class="metric-card"
+      [ngClass]="card.color">
+
+      <div class="card-title">
+        {{card.title}}
+      </div>
+
+      <div class="card-value">
+        {{card.value}}
+      </div>
+
+      <!-- <div class="card-trend">
+        {{card.trend}}
+      </div> -->
+
+    </div>
+
+  </div>
+
+  <!-- MONTHLY COLLECTION -->
+
+  <div class="chart-card big-chart">
+
+    <div class="card-header">
+      <h3>Monthly Fee Collection — 2025–26 vs 2026–27</h3>
+      <p>₹ Crore collected per month across all MVM branches</p>
+    </div>
+  <div class="chart-wrapper">
+    <canvas
+      baseChart
+      [datasets]="monthlyData"
+      [labels]="monthlyLabels"
+      [options]="lineOptions"
+      [legend]="true"
+      [chartType]="'line'">
+    </canvas>
+  </div>
+
+  </div>
+
+  <!-- QUARTERLY + PAYMENT MODE -->
+
+  <div class="bottom-grid">
+
+    <div class="chart-card">
+
+      <div class="card-header">
+        <h3>Quarterly Fee — YoY</h3>
+        <p>Q1–Q4 comparison</p>
+      </div>
+
+      <canvas
+        baseChart
+        [datasets]="quarterlyData"
+        [labels]="quarterlyLabels"
+        [options]="chartOptions"
+        [legend]="true"
+        [chartType]="'bar'">
+      </canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+      <div class="card-header">
+        <h3>Payment Mode Split</h3>
+        <p>Online vs cash vs cheque 2026–27</p>
+      </div>
+
+      <div class="payment-legend">
+
+        <span>
+          <i class="green-dot"></i>
+          Online {{paymentData[0]}}%
+        </span>
+
+        <span>
+          <i class="blue-dot"></i>
+          Cash {{paymentData[1]}}%
+        </span>
+
+        <span>
+          <i class="gray-dot"></i>
+          Cheque/DD {{paymentData[2]}}%
+        </span>
+
+      </div>
+
+      <div class="payment-wrapper">
+
+<canvas
+  baseChart
+  [data]="paymentData"
+  [labels]="paymentLabels"
+  [colors]="paymentColors"
+  [options]="doughnutOptions"
+  [chartType]="'doughnut'">
+</canvas>
+
+  </div>
+
+    </div>
+
+  </div>
+
+  <!-- OUTSTANDING FEE AGING -->
+
+  <div class="chart-card aging-card">
+
+    <div class="card-header">
+      <h3>Outstanding Fee Aging — Month-end Pending Balance</h3>
+      <p>₹ Lakh pending (lower is better) — 2025–26 vs 2026–27</p>
+    </div>
+<canvas
+  baseChart
+  [datasets]="agingData"
+  [labels]="agingLabels"
+  [options]="chartOptions"
+  [legend]="true"
+  [chartType]="'line'">
+</canvas>
+
+  </div>
+
+  <!-- BRANCH TABLE -->
+
+  <div class="table-section">
+
+    <div class="table-title-row">
+
+      <div>
+        <div class="section-caption">
+          FEE COLLECTION BY BRANCH
+        </div>
+
+        <h3>
+          Branch-wise Fee Summary
+        </h3>
+      </div>
+
+      <input
+        type="text"
+        class="search-box"
+        placeholder="Search branch..."
+        [(ngModel)]="searchText">
+
+    </div>
+
+    <div class="table-responsive">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Branch ↕</th>
+            <th>State ↕</th>
+            <th>2026–27 Rate ↕</th>
+            <th>2025–26 Rate ↕</th>
+            <th>Change ↕</th>
+            <th>Outstanding ↕</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+<tr *ngFor="let row of filteredBranches">
+
+            <td>{{row.branch}}</td>
+
+            <td>{{row.state}}</td>
+
+            <td>{{row.rate2027}}</td>
+
+            <td>{{row.rate2026}}</td>
+
+            <td class="change-green">
+              ↑ {{row.change}}
+            </td>
+
+            <td>{{row.outstanding}}</td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="row.statusClass">
+
+                {{row.status}}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

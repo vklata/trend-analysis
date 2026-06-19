@@ -1,0 +1,109 @@
+<div class="directory-page">
+
+  <div class="section-caption">
+    ALL MVM BRANCHES — PERFORMANCE 2025–26 VS 2026–27
+  </div>
+
+  <div class="table-card">
+
+    <div class="table-header">
+
+      <h3>Branch Directory</h3>
+
+   <input
+  type="text"
+  class="search-box"
+  placeholder="Search branch, state, status..."
+  [(ngModel)]="searchText">
+
+    </div>
+
+    <div class="table-responsive">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Branch ↕</th>
+            <th>State ↕</th>
+            <th>Students ↕</th>
+            <th>Fee 26–27 ↕</th>
+            <th>Fee 25–26 ↕</th>
+            <th>Pass % ↕</th>
+            <th>Attend % ↕</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let row of filteredBranches">
+
+            <td class="branch-name">
+              {{row.branch}}
+            </td>
+
+            <td>
+              {{row.state}}
+            </td>
+
+            <td>
+              {{row.students | number}}
+            </td>
+
+            <td>
+
+              <div class="fee-progress">
+
+                <div class="progress-track">
+
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="row.fee2027">
+                  </div>
+
+                </div>
+
+                <span>
+                  {{row.fee2027}}%
+                </span>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{row.fee2026}}%
+            </td>
+
+            <td>
+              {{row.pass}}%
+            </td>
+
+            <td>
+              {{row.attendance}}%
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="row.statusClass">
+
+                {{row.status}}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

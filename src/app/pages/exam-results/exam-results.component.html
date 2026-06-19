@@ -1,0 +1,272 @@
+<div class="erp-header">
+
+<div class="left-section">
+
+  <h2 class="page-title">
+    MVM Trend Analysis Report
+  </h2>
+
+  <span class="page-module">
+    {{ pageName }}
+  </span>
+
+</div>
+
+  <div class="right-section"> 
+
+     <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE 2026-27
+    </div> 
+
+     <div class="session-switch">
+<button
+ [class.active]="selectedSession==='2025-26'"
+ (click)="changeSession('2025-26')">
+
+ 2025-26
+
+</button>
+
+<button
+ [class.active]="selectedSession==='2026-27'"
+ (click)="changeSession('2026-27')">
+
+ 2026-27
+
+</button>
+
+    </div>
+
+   <button
+ class="compare-btn"
+ [class.active]="compareMode"
+ (click)="toggleCompare()">
+
+ Compare
+
+</button>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedState"
+  (change)="onStateChange()">
+
+  <option *ngFor="let s of states" [value]="s">
+    {{s}}
+  </option>
+
+</select>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedBranch"
+  (change)="onBranchChange()">
+
+  <!-- <option value="all">
+    All Branches
+  </option> -->
+
+  <option
+    *ngFor="let branch of branchOptions"
+    [value]="branch.SchoolId">
+
+    {{branch.SchoolName}}
+
+  </option>
+
+</select>
+
+
+
+
+
+<button
+  class="export-btn"
+  (click)="exportCurrentPage()">
+
+  <i class="fa fa-download"></i>
+  Export
+
+</button>
+    <!-- <button class="export-btn">
+      ⬇ Export
+    </button> -->
+
+  </div>
+
+</div>
+
+<div class="exam-page">
+
+  <!-- KPI CARDS -->
+
+  <div class="kpi-grid">
+
+    <div
+      *ngFor="let card of kpis"
+      class="metric-card"
+      [ngClass]="card.color">
+
+      <div class="card-title">
+        {{card.title}}
+      </div>
+
+      <div class="card-value">
+        {{card.value}}
+      </div>
+
+      <!-- <div class="card-trend">
+        {{card.trend}}
+      </div> -->
+
+    </div>
+
+  </div>
+
+  <!-- SUBJECT WISE CHART -->
+
+  <div class="chart-card subject-chart">
+
+    <div class="card-header">
+
+      <h3>
+        Subject-wise Average Score — 2025–26 vs 2026–27
+      </h3>
+
+      <p>
+        Average marks out of 100 across all MVM branches
+      </p>
+
+    </div>
+
+    <div class="chart-wrapper">
+
+      <canvas
+        baseChart
+        [datasets]="subjectData"
+        [labels]="subjectLabels"
+        [options]="barOptions"
+        [legend]="true"
+        [chartType]="'bar'">
+      </canvas>
+
+    </div>
+
+  </div>
+
+  <!-- DONUT + CLASS PASS RATE -->
+
+  <div class="middle-grid">
+
+    <!-- GRADE DISTRIBUTION -->
+
+    <div class="chart-card">
+
+      <div class="card-header">
+
+        <h3>
+          Grade Distribution
+        </h3>
+
+        <p>
+          2026–27 students by grade band
+        </p>
+
+      </div>
+
+      <div class="grade-legend">
+
+        <span><i class="dot green"></i>A1 (91–100)</span>
+        <span><i class="dot mint"></i>A2 (81–90)</span>
+        <span><i class="dot blue"></i>B1 (71–80)</span>
+        <span><i class="dot orange"></i>B2 (61–70)</span>
+        <span><i class="dot red"></i>C (51–60)</span>
+        <span><i class="dot gray"></i>Below 50</span>
+
+      </div>
+
+      <div class="donut-wrapper">
+
+        <canvas
+          baseChart
+          [data]="gradeData"
+          [labels]="gradeLabels"
+          [colors]="gradeColors"
+          [options]="doughnutOptions"
+          [chartType]="'doughnut'">
+        </canvas>
+
+      </div>
+
+    </div>
+
+    <!-- CLASS PASS RATE -->
+
+    <div class="chart-card">
+
+      <div class="card-header">
+
+        <h3>
+          Class-wise Pass Rate — YoY
+        </h3>
+
+        <p>
+          Class 6–12 comparison
+        </p>
+
+      </div>
+
+      <div class="chart-wrapper">
+
+        <canvas
+          baseChart
+          [datasets]="classData"
+          [labels]="classLabels"
+          [options]="barOptions"
+          [legend]="true"
+          [chartType]="'bar'">
+        </canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TERM TREND -->
+
+  <div class="chart-card term-chart">
+
+    <div class="card-header">
+
+      <h3>
+        Term Exam Score Trend — 2025–26 vs 2026–27
+      </h3>
+
+      <p>
+        Average score per exam term across all classes
+      </p>
+
+    </div>
+
+    <div class="chart-wrapper">
+
+      <canvas
+        baseChart
+        [datasets]="termData"
+        [labels]="termLabels"
+        [options]="lineOptions"
+        [legend]="true"
+        [chartType]="'line'">
+      </canvas>
+
+    </div>
+
+  </div>
+
+  <!-- TABLE -->
+
+
+
+</div>

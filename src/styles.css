@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+  --green:#0f9d6e;
+  --green-light:#e6f7f2;
+
+  --blue:#1a6fdb;
+  --blue-light:#e8f0fd;
+
+  --amber:#d97706;
+  --amber-light:#fef3c7;
+
+  --red:#dc2626;
+  --red-light:#fee2e2;
+
+  --purple:#7c3aed;
+  --purple-light:#ede9fe;
+
+  --bg:#f6f7f9;
+  --card:#ffffff;
+
+  --text:#0f1923;
+  --text2:#4b5563;
+  --text3:#9ca3af;
+
+  --border:#e5e7eb;
+}
+
+body{
+  margin:0;
+  background:#f6f7f9;
+  font-family:'DM Sans',sans-serif;
+}

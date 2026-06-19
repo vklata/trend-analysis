@@ -1,0 +1,289 @@
+<div class="erp-header">
+
+<div class="left-section">
+
+  <h2 class="page-title">
+    MVM Trend Analysis Report
+  </h2>
+
+  <span class="page-module">
+    {{ pageName }}
+  </span>
+
+</div>
+
+  <div class="right-section"> 
+
+     <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE 2026-27
+    </div> 
+
+     <div class="session-switch">
+
+      <button
+        [class.active]="selectedSession==='2025-26'"
+(click)="onSessionChange('2025-26')">
+        2025-26
+      </button>
+
+      <button
+        [class.active]="selectedSession==='2026-27'"
+        (click)="onSessionChange('2026-27')">
+        2026-27
+      </button>
+
+    </div>
+
+<button
+  class="compare-btn"
+  [class.active]="compareMode"
+  (click)="showCompare()">
+  Compare
+</button>
+
+
+<select
+class="erp-select state-select"
+[(ngModel)]="selectedState"
+(change)="onStateChange(selectedState)">
+
+<option value="All States">
+All States
+</option>
+
+<option
+  *ngFor="let state of states"
+  [value]="state.StateName">
+  {{ state.StateName }}
+</option>
+
+</select>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedBranch"
+  (change)="onBranchChange(selectedBranch)">
+
+<option value="all">
+All Branches
+</option>
+
+<option
+*ngFor="let branch of branches"
+[value]="branch.SchoolId">
+
+{{branch.SchoolName}}
+
+</option>
+
+</select>
+<button
+  class="export-btn"
+  (click)="exportCurrentPage()">
+
+  <i class="fa fa-download"></i>
+  Export
+
+</button>
+    <!-- <button class="export-btn">
+      ⬇ Export
+    </button> -->
+
+  </div>
+
+</div>
+<div class="overview-page">
+
+  <!-- KPI CARDS -->
+     <div class="metric-cards">
+
+  <div
+    *ngFor="let card of overviewKpis"
+    class="metric-card">
+
+    <div
+      class="top-line"
+      [ngClass]="{
+        'green-bg': card.color === 'green',
+        'blue-bg': card.color === 'blue',
+        'orange-bg': card.color === 'orange'
+      }">
+    </div>
+
+    <div class="metric-content">
+
+      <div class="card-title">
+        {{card.title}}
+      </div>
+
+      <div class="card-value">
+        {{card.value}}
+      </div>
+
+      <!-- <div class="card-growth">
+        ↑ {{card.trend}}
+      </div> -->
+
+      <div class="card-desc">
+        {{card.description}}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- COMPARISON BANNER -->
+
+  <div class="compare-banner">
+    📌 Showing comparison:
+    <strong>2025–26 (Previous)</strong>
+    vs
+    <strong>2026–27 (Live/Current)</strong>.
+    Data up to May 2026.
+  </div>
+
+  <!-- ENROLLMENT CHART -->
+
+  <div class="chart-card large-chart">
+
+    <div class="chart-header">
+
+      <div>
+
+        <h3 class="chart-title">
+          Student Enrolment — State-wise YoY
+        </h3>
+
+        <div class="chart-subtitle">
+          2025–26 vs 2026–27 branch-level student count
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="chart-container">
+
+<canvas
+  baseChart
+  [datasets]="enrollmentData"
+  [labels]="enrollmentLabels"
+  [options]="enrollmentOptions"
+  [legend]="true"
+  [chartType]="'bar'">
+</canvas>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTOM SECTION -->
+
+  <div class="bottom-grid">
+
+    <!-- MODULE ADOPTION -->
+
+<div class="chart-card">
+
+  <div class="chart-header">
+    <div>
+      <h3 class="chart-title">Module Adoption</h3>
+      <div class="chart-subtitle">% branches using each module</div>
+    </div>
+  </div>
+
+  <div class="module-legend">
+
+    <div class="legend-item">
+      <span class="dot green"></span>
+      Fee Mgmt {{moduleData[0]}}%
+    </div>
+
+    <div class="legend-item">
+      <span class="dot blue"></span>
+      Attendance {{moduleData[1]}}%
+    </div>
+
+    <div class="legend-item">
+      <span class="dot orange"></span>
+      Exam/Result {{moduleData[2]}}%
+    </div>
+
+    <div class="legend-item">
+      <span class="dot purple"></span>
+      Library {{moduleData[3]}}%
+    </div>
+
+    <div class="legend-item">
+      <span class="dot red"></span>
+      Transport {{moduleData[4]}}%
+    </div>
+
+    <div class="legend-item">
+      <span class="dot cyan"></span>
+      HR/Payroll {{moduleData[5]}}%
+    </div>
+
+    <div class="legend-item">
+      <span class="dot gray"></span>
+      Hostel {{moduleData[6]}}%
+    </div>
+
+  </div>
+
+  <div class="chart-container donut-chart">
+<canvas
+  baseChart
+  [data]="moduleData"
+  [labels]="moduleLabels"
+  [colors]="moduleChartColors"
+   [options]="doughnutOptions"
+    [legend]="false"
+  [chartType]="'doughnut'">
+</canvas>
+
+  </div>
+
+</div>
+
+    <!-- FEE COLLECTION RATE -->
+
+    <div class="chart-card">
+
+      <div class="chart-header">
+
+        <div>
+
+          <h3 class="chart-title">
+            State-wise Fee Collection Rate
+          </h3>
+
+          <div class="chart-subtitle">
+            2026–27 average %
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="chart-container state-chart">
+
+<canvas
+  baseChart
+  [datasets]="feeCollectionData"
+  [labels]="feeLabels"
+  [options]="horizontalOptions"
+  [legend]="false"
+  [chartType]="'horizontalBar'">
+</canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,202 @@
+<div class="erp-header">
+
+<div class="left-section">
+
+  <h2 class="page-title">
+    MVM Trend Analysis Report
+  </h2>
+
+  <span class="page-module">
+    {{ pageName }}
+  </span>
+
+</div>
+
+  <div class="right-section"> 
+
+     <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE 2026-27
+    </div> 
+
+     <div class="session-switch">
+<button
+ [class.active]="selectedSession==='2025-26'"
+ (click)="changeSession('2025-26')">
+
+ 2025-26
+
+</button>
+
+<button
+ [class.active]="selectedSession==='2026-27'"
+ (click)="changeSession('2026-27')">
+
+ 2026-27
+
+</button>
+
+    </div>
+
+   <button
+ class="compare-btn"
+ [class.active]="compareMode"
+ (click)="toggleCompare()">
+
+ Compare
+
+</button>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedState"
+  (change)="onStateChange()">
+
+  <option *ngFor="let s of states" [value]="s">
+    {{s}}
+  </option>
+
+</select>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedBranch"
+  (change)="onBranchChange()">
+
+  <!-- <option value="all">
+    All Branches
+  </option> -->
+
+  <option
+    *ngFor="let branch of branchOptions"
+    [value]="branch.SchoolId">
+
+    {{branch.SchoolName}}
+
+  </option>
+
+</select>
+
+
+
+
+
+<button
+  class="export-btn"
+  (click)="exportCurrentPage()">
+
+  <i class="fa fa-download"></i>
+  Export
+
+</button>
+    <!-- <button class="export-btn">
+      ⬇ Export
+    </button> -->
+
+  </div>
+
+</div>
+
+<div class="attendance-page">
+
+<div class="kpi-grid">
+
+  <div
+    *ngFor="let card of kpis"
+    class="metric-card"
+    [ngClass]="card.color">
+
+    <div class="card-title">
+      {{card.title}}
+    </div>
+
+    <div class="card-value">
+      {{card.value}}
+    </div>
+
+    <!-- <div class="card-trend">
+      {{card.trend}}
+    </div> -->
+
+  </div>
+
+</div>
+
+  <div class="chart-card trend-card">
+
+    <div class="card-header">
+      <h3>Monthly Attendance Trend — 2025–26 vs 2026–27</h3>
+      <p>School-wide average % per month with 90% target line</p>
+    </div>
+
+    <div class="chart-wrapper">
+
+      <canvas
+        baseChart
+        [datasets]="monthlyData"
+        [labels]="monthlyLabels"
+        [options]="lineOptions"
+        [legend]="true"
+        [chartType]="'line'">
+      </canvas>
+
+    </div>
+
+  </div>
+
+  <div class="bottom-grid">
+
+    <div class="chart-card">
+
+      <div class="card-header">
+        <h3>Attendance by Day of Week</h3>
+        <p>Average % Mon–Sat 2026–27</p>
+      </div>
+
+      <div class="chart-wrapper small-chart">
+
+        <canvas
+          baseChart
+          [datasets]="weekdayData"
+          [labels]="weekdayLabels"
+          [options]="barOptions"
+          [legend]="false"
+          [chartType]="'bar'">
+        </canvas>
+
+      </div>
+
+    </div>
+
+    <div class="chart-card">
+
+      <div class="card-header">
+        <h3>Student Attendance Bands</h3>
+        <p>2026–27 distribution</p>
+      </div>
+
+      <div class="attendance-legend">
+        <span><i class="green-dot"></i> Above 90%</span>
+        <span><i class="blue-dot"></i> 75–90% </span>
+        <span><i class="orange-dot"></i> 60–75% </span>
+        <span><i class="red-dot"></i> Below 60% </span>
+      </div>
+
+      <div class="donut-wrapper">
+
+        <canvas
+          baseChart
+          [data]="bandData"
+          [labels]="bandLabels"
+          [colors]="bandColors"
+          [options]="doughnutOptions"
+          [chartType]="'doughnut'">
+        </canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

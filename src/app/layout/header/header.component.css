@@ -1,0 +1,321 @@
+.erp-header{
+  height:68px;
+  background:#ffffff;
+  border-bottom:1px solid #e5e7eb;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:nowrap;
+  overflow:hidden;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+/* LEFT */
+
+.left-section{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  flex-shrink:0;
+}
+
+.page-title{
+  margin:0;
+  font-size:15px;
+  font-weight:700;
+  color:#111827;
+  white-space:nowrap;
+  line-height:1;
+}
+
+.page-module{
+  font-size:11px;
+  font-weight:500;
+  color:#98a2b3;
+  white-space:nowrap;
+}
+
+/* RIGHT */
+
+.right-section{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:nowrap;
+  flex:1;
+  min-width:0;
+}
+
+/* LIVE */
+
+.live-badge{
+  height:26px;
+  padding:0 12px;
+  border-radius:999px;
+  background:#dcfce7;
+  color:#15803d;
+  font-size:8px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+.live-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#16a34a;
+}
+
+/* SESSION */
+
+.session-switch{
+  display:flex;
+  border:1px solid #dfe3e8;
+  border-radius:8px;
+  overflow:hidden;
+  background:#fff;
+  flex-shrink:0;
+}
+
+.session-switch button{
+  width:92px;
+  height:36px;
+  border:none;
+  border-right:1px solid #dfe3e8;
+  background:#fff;
+  color:#4b5563;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.session-switch button:last-child{
+  border-right:none;
+}
+
+.session-switch button:hover{
+  background:#f8fafc;
+}
+
+.session-switch .active{
+  background:#f3f4f6;
+  color:#111827;
+}
+
+/* COMPARE */
+
+.compare-btn{
+  height:36px;
+  min-width:92px;
+  padding:0 16px;
+  border:1px solid #dfe3e8;
+  border-radius:8px;
+  background:#f8fafc;
+  color:#4b5563;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:.2s;
+}
+
+.compare-btn:hover{
+  background:#eef2f7;
+}
+
+/* SELECT */
+
+.erp-select{
+  height:36px;
+  border:1px solid #dfe3e8;
+  border-radius:8px;
+  background:#fff;
+  padding:0 12px;
+  font-size:14px;
+  color:#374151;
+  outline:none;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.erp-select:hover{
+  border-color:#cbd5e1;
+}
+
+.erp-select:focus{
+  border-color:#94a3b8;
+  box-shadow:0 0 0 3px rgba(59,130,246,.08);
+}
+
+/* STATE */
+
+.state-select{
+  width:170px;
+  min-width:170px;
+}
+
+/* BRANCH */
+
+.branch-select{
+  width:180px;
+  min-width:180px;
+}
+
+/* EXPORT */
+
+.export-btn{
+  height:36px;
+  padding:0 16px;
+  border:1px solid #dfe3e8;
+  border-radius:8px;
+  background:#ffffff;
+  color:#111827;
+  font-size:14px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:.2s;
+}
+
+.export-btn:hover{
+  background:#f8fafc;
+}
+
+.export-btn i{
+  font-size:13px;
+}
+
+/* DIVIDER */
+
+.header-divider{
+  width:1px;
+  height:24px;
+  background:#e5e7eb;
+}
+
+/* LARGE LAPTOP */
+
+@media(max-width:1400px){
+
+  .right-section{
+    gap:8px;
+  }
+
+  .state-select{
+    width:150px;
+    min-width:150px;
+  }
+
+  .branch-select{
+    width:160px;
+    min-width:160px;
+  }
+
+  .session-switch button{
+    width:84px;
+  }
+
+}
+
+/* LAPTOP */
+
+@media(max-width:1200px){
+
+  .erp-header{
+    height:auto;
+    padding:14px 18px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:14px;
+  }
+
+  .right-section{
+    width:100%;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+  }
+
+}
+
+/* TABLET */
+
+@media(max-width:768px){
+
+  .erp-header{
+    padding:12px;
+  }
+
+  .left-section{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+  }
+
+  .page-title{
+    font-size:16px;
+  }
+
+  .right-section{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .session-switch{
+    width:100%;
+  }
+
+  .session-switch button{
+    flex:1;
+    width:auto;
+  }
+
+  .state-select,
+  .branch-select,
+  .compare-btn,
+  .export-btn{
+    width:100%;
+    min-width:100%;
+  }
+
+}
+
+/* MOBILE */
+
+@media(max-width:480px){
+
+  .page-title{
+    font-size:15px;
+  }
+
+  .page-module{
+    font-size:12px;
+  }
+
+  .live-badge{
+    width:max-content;
+  }
+
+  .compare-btn,
+  .export-btn,
+  .erp-select{
+    height:40px;
+  }
+
+}

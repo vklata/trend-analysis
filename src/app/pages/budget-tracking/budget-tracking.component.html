@@ -1,0 +1,318 @@
+<div class="erp-header">
+
+<div class="left-section">
+
+  <h2 class="page-title">
+    MVM Trend Analysis Report
+  </h2>
+
+  <span class="page-module">
+    {{ pageName }}
+  </span>
+
+</div>
+
+  <div class="right-section"> 
+
+     <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE 2026-27
+    </div> 
+
+     <div class="session-switch">
+<button
+ [class.active]="selectedSession==='2025-26'"
+ (click)="changeSession('2025-26')">
+
+ 2025-26
+
+</button>
+
+<button
+ [class.active]="selectedSession==='2026-27'"
+ (click)="changeSession('2026-27')">
+
+ 2026-27
+
+</button>
+
+    </div>
+
+   <button
+ class="compare-btn"
+ [class.active]="compareMode"
+ (click)="toggleCompare()">
+
+ Compare
+
+</button>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedState"
+  (change)="onStateChange()">
+
+  <option *ngFor="let s of states" [value]="s">
+    {{s}}
+  </option>
+
+</select>
+
+<select
+  class="erp-select branch-select"
+  [(ngModel)]="selectedBranch"
+  (change)="onBranchChange()">
+
+  <!-- <option value="all">
+    All Branches
+  </option> -->
+
+  <option
+    *ngFor="let branch of branchOptions"
+    [value]="branch.SchoolId">
+
+    {{branch.SchoolName}}
+
+  </option>
+
+</select>
+
+
+
+
+
+<button
+  class="export-btn"
+  (click)="exportCurrentPage()">
+
+  <i class="fa fa-download"></i>
+  Export
+
+</button>
+    <!-- <button class="export-btn">
+      ⬇ Export
+    </button> -->
+
+  </div>
+
+</div>
+
+
+<div class="budget-page">
+  <!-- KPI CARDS -->
+
+  <div class="kpi-grid">
+    <div *ngFor="let card of kpis" class="metric-card" [ngClass]="card.color">
+<div class="icon-box">
+
+  <span *ngIf="card.title.indexOf('Income') > -1">₹</span>
+
+  <span *ngIf="card.title.indexOf('Expense') > -1">🛒</span>
+
+  <span *ngIf="card.title.indexOf('Surplus') > -1">↗</span>
+
+  <span *ngIf="card.title.indexOf('Utilization') > -1">⏱</span>
+
+</div>
+
+      <div class="card-title">
+        {{ card.title }}
+      </div>
+
+      <div class="card-value">
+        {{ card.value }}
+      </div>
+<!-- 
+      <div class="card-trend">
+        {{ card.trend }}
+      </div> -->
+
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="card.progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCOME VS EXPENSE -->
+
+  <div class="chart-card trend-card">
+    <div class="card-header">
+      <div>
+        <h3>Income vs Expense — Monthly Trend 2025–26 vs 2026–27</h3>
+        <p>₹ Crore per month | Surplus = Income − Expense</p>
+      </div>
+    </div>
+
+    <div class="line-chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="incomeExpenseData"
+        [labels]="monthlyLabels"
+        [options]="lineOptions"
+        [legend]="true"
+        [chartType]="'line'"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <!-- DONUT CHARTS -->
+
+  <div class="top-grid">
+    <!-- INCOME -->
+
+    <div class="chart-card">
+      <div class="card-header">
+        <h3>Income Breakdown 2026–27</h3>
+        <p>Revenue heads contribution</p>
+      </div>
+
+      <!-- <div class="legend-row">
+        <span><i class="green-dot"></i>Tuition Fee {{ incomeLabels[0] }}</span>
+        <span><i class="blue-dot"></i>Dev Fee 14%</span>
+        <span><i class="orange-dot"></i>Transport 11%</span>
+        <span><i class="purple-dot"></i>Hostel 9%</span>
+        <span><i class="red-dot"></i>Exam Fee 5%</span>
+        <span><i class="gray-dot"></i>Other 3%</span>
+      </div> -->
+
+      <div class="donut-wrapper">
+        <canvas
+          baseChart
+          [data]="incomeData"
+          [labels]="incomeLabels"
+          [colors]="incomeColors"
+          [options]="doughnutOptions"
+          [chartType]="'doughnut'"
+        >
+        </canvas>
+      </div>
+    </div>
+
+    <!-- EXPENSE -->
+
+    <div class="chart-card">
+      <div class="card-header">
+        <h3>Expense Breakdown 2026–27</h3>
+        <p>Cost heads contribution</p>
+      </div>
+<!-- 
+      <div class="legend-row">
+        <span><i class="blue-dot"></i>Salaries 44%</span>
+        <span><i class="orange-dot"></i>Infrastructure 16%</span>
+        <span><i class="purple-dot"></i>Academics 12%</span>
+        <span><i class="green-dot"></i>Technology 6%</span>
+        <span><i class="red-dot"></i>Welfare 6%</span>
+        <span><i class="gray-dot"></i>Admin 5%</span>
+      </div> -->
+
+      <div class="donut-wrapper">
+<canvas
+  *ngIf="expenseData.length"
+  baseChart
+  [data]="expenseData"
+  [labels]="expenseLabels"
+  [colors]="expenseColors"
+  [options]="doughnutOptions"
+  [chartType]="'doughnut'">
+</canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- STACKED EXPENSE TREND -->
+
+  <div class="chart-card expense-card">
+    <div class="card-header">
+      <h3>2-Year Expense Trend by Category</h3>
+      <p>Monthly ₹ Cr spend per head — 2025–26 vs 2026–27 stacked</p>
+    </div>
+
+    <div class="stacked-chart-wrapper">
+<canvas
+  baseChart
+  [datasets]="expenseTrendData"
+  [labels]="expenseTrendLabels"
+  [options]="expenseTrendOptions"
+  [chartType]="'bar'">
+</canvas>
+    </div>
+  </div>
+
+  <!-- TABLE SECTION -->
+
+  <div class="section-caption">BUDGET VS ACTUAL — HEAD-WISE</div>
+
+  <div class="table-section">
+    <div class="table-header">
+      <h3>Budget Tracking Detail</h3>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Head</th>
+            <th>Budget 2026–27</th>
+            <th>Actual (Apr–Mar)</th>
+            <th>Variance</th>
+            <th>% Used</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let row of budgetRows">
+            <td>
+              <div class="head-cell">
+                <span class="head-dot" [ngClass]="row.barClass"> </span>
+
+                {{ row.head }}
+              </div>
+            </td>
+
+            <td>{{ row.budget }}</td>
+
+            <td>{{ row.actual }}</td>
+
+            <td class="negative">
+              {{ row.variance }}
+            </td>
+
+        <td>
+
+  <div class="used-cell">
+
+    <div class="used-track">
+
+      <div
+        class="used-fill"
+        [ngClass]="row.barClass"
+        [style.width.%]="row.used">
+      </div>
+
+    </div>
+
+    <span>{{row.used}}%</span>
+
+  </div>
+
+</td>
+
+          <td>
+
+  <span
+    class="status-badge"
+    [ngClass]="row.statusClass">
+
+    {{row.status}}
+
+  </span>
+
+</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
