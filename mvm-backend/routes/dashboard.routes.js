@@ -3,6 +3,52 @@ const router = express.Router();
 
 const db = require("../config/db");
 
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Username and Password are required"
+      });
+    }
+
+    const sql = `
+      SELECT
+        UserId,
+        UserName,
+        TenantId
+      FROM userdetail
+      WHERE UserName = ?
+        AND Password = ?;
+    `;
+
+    const [rows] = await db.query(sql, [username, password]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Username or Password"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Login Successful",
+      user: rows[0]
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    });
+  }
+});
+
 router.get("/state", async (req, res) => {
   try {
     const tenantId = Number(req.query.tenantId || 1);
